@@ -1,18 +1,8 @@
 import React, {useEffect} from 'react'
 import './App.css'
-import {
-    AppBar,
-    Button,
-    CircularProgress,
-    Container,
-    LinearProgress,
-    Toolbar,
-    Typography
-} from "@mui/material"
+import {AppBar, Button, CircularProgress, Container, LinearProgress, Toolbar, Typography} from "@mui/material"
 import {TodolistsLists} from "../features/todolists/TodolistsLists"
-import {useSelector} from "react-redux";
-import {AppRootStateType} from "./store";
-import {initializeAppTC, RequestStatusType} from "./app-reducer";
+import {initializeAppTC} from "./app-reducer";
 import {CustomizedSnackbars} from "../components/errorSnackbar/ErrorSnackbar";
 import {Login} from "../features/login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
@@ -28,7 +18,7 @@ export enum ROUTS {
 
 function App() {
 
-    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+    const status = useAppSelector(state => state.app.status)
     const dispatch = useAppDispatch()
     const isInitialized = useAppSelector(state => state.app.isInitialized)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)

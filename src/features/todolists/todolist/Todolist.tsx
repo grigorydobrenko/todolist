@@ -93,14 +93,15 @@ export const Todolist: React.FC<PropsType> = React.memo((
             <div>
                 <h3>
                     <EditableSpan value={title} callBack={ChangeTodolist} disabled={entityStatus === 'loading'}/>
-                    <IconButton aria-label="delete" size="small" onClick={onClickTitleHandler} disabled={entityStatus === 'loading'}>
+                    <IconButton aria-label="delete" size="small" onClick={onClickTitleHandler}
+                                disabled={entityStatus === 'loading'}>
                         <Delete/>
                     </IconButton>
                 </h3>
                 <AddItemForm addItem={addNewTask} disabled={entityStatus === 'loading'}/>
 
                 {!tasksForTodolist.length && <span>No tasks</span>}
-                { tasksForTodolist.map(t =>
+                {tasksForTodolist.map(t =>
                     <TaskComponent
                         key={t.id}
                         changeTaskStatus={changeTaskStatus}

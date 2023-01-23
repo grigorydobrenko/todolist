@@ -29,7 +29,7 @@ const slice = createSlice({
         changeTodolistFilterAC(state, action: PayloadAction<{ id: string, filter: FilterType }>) {
             const index = state.findIndex(todo => todo.id === action.payload.id)
             if (index !== -1) {
-                state[index].title = action.payload.filter
+                state[index].filter = action.payload.filter
             }
         },
         setTodolistsAC(state, action: PayloadAction<{ todos: TodolistType[] }>) {
@@ -38,7 +38,7 @@ const slice = createSlice({
         changeTodolistEntityStatusAC(state, action: PayloadAction<{ id: string, status: RequestStatusType }>) {
             const index = state.findIndex(todo => todo.id === action.payload.id)
             if (index !== -1) {
-                state[index].title = action.payload.status
+                state[index].entityStatus = action.payload.status
             }
         },
     }

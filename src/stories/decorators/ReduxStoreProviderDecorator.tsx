@@ -2,7 +2,7 @@ import React from 'react'
 import {Provider} from "react-redux"
 import {combineReducers, legacy_createStore} from 'redux'
 import {v1} from 'uuid'
-import {AppRootStateType} from '../../app/store'
+import {RootState} from '../../app/store'
 import {tasksReducer} from '../../features/todolists/tasks-reducer'
 import {todolistsReducer} from '../../features/todolists/todolists-reducer'
 import {TaskPriorities, TaskStatuses} from "../../api/todolist-api"
@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
     auth: authReducer
 })
 
-const initialGlobalState: AppRootStateType = {
+const initialGlobalState: RootState = {
     todolists: [
         {
             id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: "idle"

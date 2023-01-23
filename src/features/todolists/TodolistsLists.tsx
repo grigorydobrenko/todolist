@@ -64,6 +64,7 @@ export const TodolistsLists: React.FC = () => {
         }
         dispatch(getTodoTC())
     }, [])
+
     if (!isLoggedIn) {
         return <Navigate to={ROUTS.LOGIN}/>
     }
