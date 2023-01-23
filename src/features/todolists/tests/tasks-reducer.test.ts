@@ -1,5 +1,4 @@
-import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from '../tasks-reducer'
-import {TasksStateType} from '../../../app/App'
+import {addTaskAC, removeTaskAC, tasksReducer, TasksStateType, updateTaskAC} from '../tasks-reducer'
 import {addTodolistAC, removeTodolistAC} from "../todolists-reducer"
 import {TaskPriorities, TaskStatuses} from "../../../api/todolist-api"
 
@@ -17,7 +16,8 @@ beforeEach(() => {
                 deadline: '',
                 todoListId: 'todolistId1',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: "idle"
             },
             {
                 id: '2', title: 'JS', status: TaskStatuses.Completed,
@@ -27,7 +27,8 @@ beforeEach(() => {
                 deadline: '',
                 todoListId: 'todolistId1',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: "idle"
             },
             {
                 id: '3', title: 'React', status: TaskStatuses.New,
@@ -37,7 +38,8 @@ beforeEach(() => {
                 deadline: '',
                 todoListId: 'todolistId1',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: "idle"
             }
         ],
         'todolistId2': [
@@ -49,7 +51,8 @@ beforeEach(() => {
                 deadline: '',
                 todoListId: 'todolistId2',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: "idle"
             },
             {
                 id: '2', title: 'milk', status: TaskStatuses.Completed,
@@ -59,7 +62,8 @@ beforeEach(() => {
                 deadline: '',
                 todoListId: 'todolistId2',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: "idle"
             },
             {
                 id: '3', title: 'tea', status: TaskStatuses.New,
@@ -69,7 +73,8 @@ beforeEach(() => {
                 deadline: '',
                 todoListId: 'todolistId2',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: "idle"
             }
         ]
     }
@@ -77,7 +82,7 @@ beforeEach(() => {
 
 
 test('correct task should be deleted from correct array', () => {
-    const action = removeTaskAC('2', 'todolistId2')
+    const action = removeTaskAC({taskId: '2', todolistId: 'todolistId2'})
     const endState = tasksReducer(startState, action)
     expect(endState).toEqual({
         'todolistId1': [
@@ -89,7 +94,9 @@ test('correct task should be deleted from correct array', () => {
                 deadline: '',
                 todoListId: 'todolistId1',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: "idle"
+
             },
             {
                 id: '2', title: 'JS', status: TaskStatuses.Completed,
@@ -99,7 +106,8 @@ test('correct task should be deleted from correct array', () => {
                 deadline: '',
                 todoListId: 'todolistId1',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: "idle"
             },
             {
                 id: '3', title: 'React', status: TaskStatuses.New,
@@ -109,7 +117,8 @@ test('correct task should be deleted from correct array', () => {
                 deadline: '',
                 todoListId: 'todolistId1',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: "idle"
             }
         ],
         'todolistId2': [
@@ -121,7 +130,8 @@ test('correct task should be deleted from correct array', () => {
                 deadline: '',
                 todoListId: 'todolistId2',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: "idle"
             },
             {
                 id: '3', title: 'tea', status: TaskStatuses.New,
@@ -131,27 +141,30 @@ test('correct task should be deleted from correct array', () => {
                 deadline: '',
                 todoListId: 'todolistId2',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: "idle"
             }
         ]
     })
 })
 
 test('correct task should be added to correct array', () => {
-    const action = addTaskAC('todolistId1', {
-        id: 'id',
-        title: 'Angular',
-        status: TaskStatuses.New,
-        todoListId: 'id1',
-        startDate: '',
-        addedDate: '',
-        deadline: '',
-        order: 0,
-        priority: TaskPriorities.Low,
-        description: '',
+    const action = addTaskAC({
+        todolistId: 'todolistId1', task: {
+            id: 'id',
+            title: 'Angular',
+            status: TaskStatuses.New,
+            todoListId: 'id1',
+            startDate: '',
+            addedDate: '',
+            deadline: '',
+            order: 0,
+            priority: TaskPriorities.Low,
+            description: '',
+        }
     })
-    const endState = tasksReducer(startState, action)
 
+    const endState = tasksReducer(startState, action)
 
     expect(endState['todolistId1'].length).toBe(4)
     expect(endState['todolistId2'].length).toBe(3)
@@ -161,15 +174,19 @@ test('correct task should be added to correct array', () => {
 })
 
 test('status of specified task should be changed', () => {
-    const action = updateTaskAC('2', {status: TaskStatuses.New}, 'todolistId2')
+    const action = updateTaskAC({taskId: '2', task: {status: TaskStatuses.New}, todolistId: 'todolistId2'})
+
     const endState = tasksReducer(startState, action)
+
     expect(endState['todolistId2'][1].status).toBe(TaskStatuses.New)
     expect(endState['todolistId1'][1].status).toBe(TaskStatuses.Completed)
 })
 
 test('task title should be changed', () => {
-    const action = updateTaskAC('1', {title: 'salt'}, 'todolistId2')
+    const action = updateTaskAC({taskId: '1', task: {title: 'salt'}, todolistId: 'todolistId2'})
+
     const endState = tasksReducer(startState, action)
+
     expect(endState['todolistId2'][0].title).toBe('salt')
     expect(endState['todolistId1'][0].title).toBe('CSS')
 })
@@ -177,15 +194,21 @@ test('task title should be changed', () => {
 
 test('new array should be added when new todolist is added', () => {
 
-    const action = addTodolistAC({
-        id: 'blabla',
+    let todolist = {
+        id: '1',
         title: 'newTodolistTitle',
         order: 0,
         addedDate: ''
-    })
+    };
+
+    const action = addTodolistAC({todolist})
+
     const endState = tasksReducer(startState, action)
+
     const keys = Object.keys(endState)
+
     const newKey = keys.find(k => k != 'todolistId1' && k != 'todolistId2')
+
     if (!newKey) {
         throw Error('new key should be added')
     }
@@ -195,7 +218,7 @@ test('new array should be added when new todolist is added', () => {
 })
 
 test('property with todolistId should be deleted', () => {
-    const action = removeTodolistAC('todolistId2')
+    const action = removeTodolistAC({id: 'todolistId2'})
     const endState = tasksReducer(startState, action)
     const keys = Object.keys(endState)
 

@@ -22,10 +22,12 @@ export const store = configureStore({
 
 })
 
+export type RootReducerType = typeof rootReducer
+
+export type AppRootState = ReturnType<RootReducerType>
+export type AppDispatch = ThunkDispatch<AppRootState, unknown, AnyAction>
+
 // @ts-ignore
 window.store = store
-
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>
 
 

@@ -1,14 +1,14 @@
 import React from 'react'
 import {ComponentStory, ComponentMeta} from '@storybook/react'
 import App from "./App"
-import {ReduxStoreProviderDecorator} from "../stories/decorators/ReduxStoreProviderDecorator"
+import {HashRouterDecorator, ReduxStoreProviderDecorator} from "../stories/decorators/ReduxStoreProviderDecorator"
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
     title: 'Todolist/App',
     component: App,
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-    decorators: [ReduxStoreProviderDecorator]
+    decorators: [ReduxStoreProviderDecorator, HashRouterDecorator]
 
 } as ComponentMeta<typeof App>;
 

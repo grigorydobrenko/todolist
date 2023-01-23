@@ -1,6 +1,6 @@
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "./todolists-reducer"
 import {ModelType, ResultCode, TaskType, todolistAPI} from "../../api/todolist-api"
-import {RootState} from "../../app/store"
+import {AppRootState} from "../../app/store"
 import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
 import axios, {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetWorkError} from "../../utils/error-utils";
@@ -111,7 +111,7 @@ export const createTaskTC = (todoId: string, title: string) => async (dispatch: 
     }
 }
 
-export const updateTaskTC = (todoId: string, taskId: string, value: UpdateTaskType) => async (dispatch: Dispatch, getState: () => RootState) => {
+export const updateTaskTC = (todoId: string, taskId: string, value: UpdateTaskType) => async (dispatch: Dispatch, getState: () => AppRootState) => {
     const task = getState().tasks[todoId].find(t => t.id === taskId)
     if (task) {
         const model: ModelType = {
