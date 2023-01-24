@@ -6,7 +6,7 @@ import {Delete} from "@mui/icons-material"
 import TaskComponent from "./task/TaskComponent"
 import {TaskStatuses} from "../../../api/todolist-api"
 import {FilterType} from "../todolists-reducer";
-import {fetchTasksTC, TaskDomainType} from "../tasks-reducer";
+import {fetchTasks, TaskDomainType} from "../tasks-reducer";
 import {useAppDispatch} from "../../../app/hooks";
 import {RequestStatusType} from "../../../app/app-reducer";
 
@@ -85,7 +85,7 @@ export const Todolist: React.FC<PropsType> = React.memo((
     }
 
     useEffect(() => {
-        dispatch(fetchTasksTC(id))
+        dispatch(fetchTasks(id))
     }, [])
 
     return (

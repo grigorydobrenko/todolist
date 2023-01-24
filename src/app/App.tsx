@@ -2,12 +2,12 @@ import React, {useEffect} from 'react'
 import './App.css'
 import {AppBar, Button, CircularProgress, Container, LinearProgress, Toolbar, Typography} from "@mui/material"
 import {TodolistsLists} from "../features/todolists/TodolistsLists"
-import {initializeAppTC} from "./app-reducer";
 import {CustomizedSnackbars} from "../components/errorSnackbar/ErrorSnackbar";
 import {Login} from "../features/login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "./hooks";
-import {logoutTC} from "../features/login/auth-reducer";
+import {logout} from "../features/login/auth-reducer";
+import {initializeApp} from "./app-reducer";
 
 export enum ROUTS {
     DEFAULT = '/',
@@ -24,12 +24,11 @@ function App() {
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     const logOut = () => {
-        dispatch(logoutTC())
+        dispatch(logout())
     }
 
     useEffect(() => {
-
-        dispatch(initializeAppTC())
+        dispatch(initializeApp())
     }, [])
 
     if (!isInitialized) {
@@ -44,9 +43,9 @@ function App() {
             <AppBar position="static">
                 <Toolbar variant="dense" className={'toolBar'}>
                     <Typography variant="h6" color="inherit" component="div">
-                       Todolist
+                        Todolist
                     </Typography>
-                    {isLoggedIn && <Button color='inherit'  onClick={logOut}>Log out</Button>}
+                    {isLoggedIn && <Button color='inherit' onClick={logOut}>Log out</Button>}
                 </Toolbar>
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>

@@ -7,11 +7,11 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {useFormik} from "formik";
+import {FormikHelpers, useFormik} from "formik";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {loginTC} from "./auth-reducer";
 import {Navigate} from "react-router-dom";
 import {ROUTS} from "../../app/App";
+import {login} from "./auth-reducer";
 
 type FormikErrorType = {
     email?: string
@@ -51,12 +51,19 @@ export const Login = () => {
             }
             return errors
         },
-        onSubmit: (values: LoginPayloadType) => {
-            dispatch(loginTC(values))
-            formik.resetForm()
+        onSubmit: async (values: LoginPayloadType, formikHelpers: FormikHelpers<LoginPayloadType>) => {
+            const action = await dispatch(login(values))
+
+            if (login.rejected.match(action)) {
+                if (action.payload?.fieldsErrors?.length) {
+                    const error = action.payload?.fieldsErrors[0];
+                    formikHelpers.setFieldError(error.field, error.error)
+                }
+            }
+
         },
     });
-    
+
 
     if (isLoggedIn) {
         return <Navigate to={ROUTS.DEFAULT}/>

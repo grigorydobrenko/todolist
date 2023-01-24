@@ -90,10 +90,13 @@ export type TodolistType = {
     order: number
     title: string
 }
+
+export type FieldsError = { field: string, error: string }
+
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: string[]
-    fieldsErrors: string
+    fieldsErrors?: FieldsError[]
     data: D
 }
 

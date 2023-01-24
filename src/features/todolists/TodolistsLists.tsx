@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect} from "react"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import {createTaskTC, deleteTaskTC, updateTaskTC} from "./tasks-reducer"
+import {createTask, deleteTask, updateTask} from "./tasks-reducer"
 import {
-    changeTodolistFilterAC,
-    changeTodoTitleTC,
-    createTodoTC,
-    deleteTodoTC,
-    FilterType, getTodoTC
+    changeTodolistFilterAC, changeTodolistTitle,
+    createTodolist,
+
+    fetchTodolists,
+    FilterType, removeTodolist
 } from "./todolists-reducer"
 import {TaskStatuses} from "../../api/todolist-api"
 import {Grid, Paper} from "@mui/material"
@@ -22,39 +22,39 @@ export const TodolistsLists: React.FC = () => {
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
 
-    const removeTask = useCallback((TodolistId: string, taskID: string) => {
-        dispatch(deleteTaskTC(TodolistId, taskID))
+    const removeTask = useCallback((todolistId: string, taskId: string) => {
+        dispatch(deleteTask({todolistId, taskId}))
     }, [dispatch])
 
 
-    const changeFilter = useCallback((todolistID: string, filter: FilterType) => {
-        dispatch(changeTodolistFilterAC({id: todolistID, filter: filter}))
+    const changeFilter = useCallback((todolistId: string, filter: FilterType) => {
+        dispatch(changeTodolistFilterAC({id: todolistId, filter: filter}))
     }, [dispatch])
 
-    const addTask = useCallback((todolistID: string, newTitle: string) => {
-        dispatch(createTaskTC(todolistID, newTitle))
+    const addTask = useCallback((todolistId: string, title: string) => {
+        dispatch(createTask({todolistId, title}))
     }, [dispatch])
 
-    const changeTaskStatus = useCallback((todolistID: string, taskId: string, status: TaskStatuses) => {
-        dispatch(updateTaskTC(todolistID, taskId, {status}))
+    const changeTaskStatus = useCallback((todolistId: string, taskId: string, status: TaskStatuses) => {
+        dispatch(updateTask({todolistId, taskId, value: {status}}))
     }, [dispatch])
 
-    const removeTodolist = useCallback((todolistId: string) => {
-        dispatch(deleteTodoTC(todolistId))
+    const removeTodolistCallback = useCallback((todolistId: string) => {
+        dispatch(removeTodolist(todolistId))
     }, [dispatch])
 
 
     const addTodolist = useCallback((todolistTitle: string) => {
-        dispatch(createTodoTC(todolistTitle))
+        dispatch(createTodolist(todolistTitle))
     }, [dispatch])
 
-    const changeTaskTitle = useCallback((TodolistId: string, taskId: string, newTitle: string) => {
-        dispatch(updateTaskTC(TodolistId, taskId, {title: newTitle}))
+    const changeTaskTitle = useCallback((todolistId: string, taskId: string, newTitle: string) => {
+        dispatch(updateTask({todolistId, taskId, value: {title: newTitle}}))
     }, [dispatch])
 
 
-    const changeTodolistTitle = useCallback((TodolistId: string, newTitle: string) => {
-        dispatch(changeTodoTitleTC(TodolistId, newTitle))
+    const changeTodolistTitleCallback = useCallback((todolistId: string, title: string) => {
+        dispatch(changeTodolistTitle({todolistId, title}))
     }, [dispatch])
 
     useEffect(() => {
@@ -62,7 +62,7 @@ export const TodolistsLists: React.FC = () => {
         if (!isLoggedIn) {
             return
         }
-        dispatch(getTodoTC())
+        dispatch(fetchTodolists())
     }, [])
 
     if (!isLoggedIn) {
@@ -88,9 +88,9 @@ export const TodolistsLists: React.FC = () => {
                             addTask={addTask}
                             changeTaskStatus={changeTaskStatus}
                             filter={t.filter}
-                            removeTodolist={removeTodolist}
+                            removeTodolist={removeTodolistCallback}
                             changeTaskTitle={changeTaskTitle}
-                            changeTodolistTitle={changeTodolistTitle}
+                            changeTodolistTitle={changeTodolistTitleCallback}
                         />
                     </Paper>
                 </Grid>
