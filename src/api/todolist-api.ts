@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from 'axios'
-import {LoginPayloadType} from "../features/login/Login";
+import {LoginPayloadType} from "../features/auth/Login";
 import {UpdateTaskType} from "../features/todolists/tasks-reducer";
 
 

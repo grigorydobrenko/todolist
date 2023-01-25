@@ -12,6 +12,8 @@ import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {Navigate} from "react-router-dom";
 import {ROUTS} from "../../app/App";
 import {login} from "./auth-reducer";
+import {selectIsLoggedIn} from "./selectors";
+
 
 type FormikErrorType = {
     email?: string
@@ -28,7 +30,7 @@ export type LoginPayloadType = {
 
 export const Login = () => {
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
     const formik = useFormik({
         initialValues: {

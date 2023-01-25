@@ -1,8 +1,9 @@
 import {ResultCode, todolistAPI, TodolistType} from "../../api/todolist-api"
 import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios, {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetWorkError} from "../../utils/error-utils";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+
 
 // thunks
 
@@ -26,7 +27,6 @@ export const fetchTodolists = createAsyncThunk('todolists/fetchTodolists', async
         return rejectWithValue(null)
     }
 })
-
 export const removeTodolist = createAsyncThunk('todolists/removeTodolist', async (todolistId: string, {
     dispatch,
     rejectWithValue
@@ -47,7 +47,6 @@ export const removeTodolist = createAsyncThunk('todolists/removeTodolist', async
         return rejectWithValue(null)
     }
 })
-
 export const createTodolist = createAsyncThunk('todolists/createTodolist', async (title: string, {
     dispatch,
     rejectWithValue
@@ -70,7 +69,6 @@ export const createTodolist = createAsyncThunk('todolists/createTodolist', async
         return rejectWithValue(null)
     }
 })
-
 export const changeTodolistTitle = createAsyncThunk('todolists/changeTodolistTitle', async (param: { todolistId: string, title: string }, {
     dispatch,
     rejectWithValue
@@ -98,10 +96,16 @@ export const changeTodolistTitle = createAsyncThunk('todolists/changeTodolistTit
     }
 })
 
+export const asyncActions = {
+    fetchTodolists,
+    removeTodolist,
+    createTodolist,
+    changeTodolistTitle
+}
 
 // slice
 
-const slice = createSlice({
+export const slice = createSlice({
     name: 'todolists',
     initialState: [] as TodoListDomainType[],
     reducers: {

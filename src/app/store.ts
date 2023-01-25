@@ -1,9 +1,9 @@
 import {tasksReducer} from '../features/todolists/tasks-reducer'
 import {todolistsReducer} from '../features/todolists/todolists-reducer'
-import {AnyAction, combineReducers} from 'redux'
-import thunk, {ThunkDispatch} from "redux-thunk"
+import {combineReducers} from 'redux'
+import thunk from "redux-thunk"
 import {appReducer} from "./app-reducer";
-import {authReducer} from "../features/login/auth-reducer";
+import {authReducer} from "../features/auth/auth-reducer";
 import {configureStore} from "@reduxjs/toolkit";
 
 
@@ -25,7 +25,7 @@ export const store = configureStore({
 export type RootReducerType = typeof rootReducer
 
 export type AppRootState = ReturnType<RootReducerType>
-export type AppDispatch = ThunkDispatch<AppRootState, unknown, AnyAction>
+export type AppDispatch = typeof store.dispatch
 
 // @ts-ignore
 window.store = store

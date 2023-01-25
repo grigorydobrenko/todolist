@@ -7,7 +7,7 @@ import {tasksReducer} from '../../features/todolists/tasks-reducer'
 import {todolistsReducer} from '../../features/todolists/todolists-reducer'
 import {TaskPriorities, TaskStatuses} from "../../api/todolist-api"
 import {appReducer} from "../../app/app-reducer";
-import {authReducer} from "../../features/login/auth-reducer";
+import {authReducer} from "../../features/auth/auth-reducer";
 import thunk from "redux-thunk";
 import {configureStore} from "@reduxjs/toolkit";
 import {HashRouter} from "react-router-dom";

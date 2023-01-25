@@ -10,7 +10,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export const login = createAsyncThunk<undefined, LoginPayloadType, {
     rejectValue: { errors: string[], fieldsErrors?: FieldsError[] }
-}>('auth/login', async (data: LoginPayloadType, thunkAPI) => {
+}>('auth/auth', async (data: LoginPayloadType, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const res = await authAPI.login(data)

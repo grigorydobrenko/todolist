@@ -1,4 +1,4 @@
-import {setIsLoggedIn} from "../features/login/auth-reducer";
+import {setIsLoggedIn} from "../features/auth/auth-reducer";
 import {authAPI, ResultCode} from "../api/todolist-api";
 import {handleServerAppError, handleServerNetWorkError} from "../utils/error-utils";
 import axios, {AxiosError} from "axios";

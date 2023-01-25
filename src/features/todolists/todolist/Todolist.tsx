@@ -6,24 +6,10 @@ import {Delete} from "@mui/icons-material"
 import TaskComponent from "./task/TaskComponent"
 import {TaskStatuses} from "../../../api/todolist-api"
 import {FilterType} from "../todolists-reducer";
-import {fetchTasks, TaskDomainType} from "../tasks-reducer";
-import {useAppDispatch} from "../../../app/hooks";
+import {TaskDomainType} from "../tasks-reducer";
+import {useActions} from "../../../app/hooks";
 import {RequestStatusType} from "../../../app/app-reducer";
-
-type PropsType = {
-    id: string
-    title: string
-    tasks: TaskDomainType[]
-    removeTask: (todolistId: string, taskID: string) => void
-    changeFilter: (todolistID: string, filter: FilterType) => void
-    addTask: (todolistID: string, newTitle: string) => void
-    changeTaskStatus: (todolistID: string, taskId: string, status: TaskStatuses) => void
-    removeTodolist: (todolistId: string) => void
-    changeTaskTitle: (TodolistId: string, taskId: string, newTitle: string) => void
-    changeTodolistTitle: (TodolistId: string, newTitle: string) => void
-    filter: FilterType,
-    entityStatus: RequestStatusType
-}
+import {tasksActions, todolistsActions} from "../index";
 
 
 export const Todolist: React.FC<PropsType> = React.memo((
@@ -31,45 +17,51 @@ export const Todolist: React.FC<PropsType> = React.memo((
         id,
         title,
         tasks,
-        removeTask,
-        changeFilter,
-        addTask,
-        changeTaskStatus,
-        removeTodolist,
-        changeTaskTitle,
-        changeTodolistTitle,
         filter,
         entityStatus
     }
 ) => {
 
-    const dispatch = useAppDispatch()
+    const {fetchTasks, updateTask, deleteTask, createTask} = useActions(tasksActions)
+    const {removeTodolist, changeTodolistTitle, changeTodolistFilterAC} = useActions(todolistsActions)
+
+    const removeTask = useCallback((todolistId: string, taskId: string) => {
+        deleteTask({todolistId, taskId})
+    }, [])
+
+
+    const changeTaskStatus = useCallback((todolistId: string, taskId: string, status: TaskStatuses) => {
+        updateTask({todolistId, taskId, value: {status}})
+    }, [])
+
+    const changeTaskTitle = useCallback((todolistId: string, taskId: string, newTitle: string) => {
+        updateTask({todolistId, taskId, value: {title: newTitle}})
+    }, [])
 
     const onAllClickHandler = useCallback(() => {
-        changeFilter(id, 'all')
-    }, [changeFilter, id])
+        changeTodolistFilterAC({id: id, filter: 'all'})
+    }, [id])
 
     const onActiveClickHandler = useCallback(() => {
-        changeFilter(id, 'active')
-    }, [changeFilter, id])
+        changeTodolistFilterAC({id: id, filter: 'active'})
+    }, [id])
 
     const onCompleteClickHandler = useCallback(() => {
-        changeFilter(id, 'completed')
-    }, [changeFilter, id])
+        changeTodolistFilterAC({id: id, filter: 'completed'})
+    }, [id])
 
 
     const addNewTask = useCallback((title: string) => {
-        addTask(id, title)
-    }, [addTask, id])
+        createTask({todolistId: id, title})
+    }, [id])
 
-
-    const onClickTitleHandler = () => {
+    const onClickRemoveHandler = () => {
         removeTodolist(id)
     }
 
-    const ChangeTodolist = useCallback((newTitle: string) => {
-        changeTodolistTitle(id, newTitle)
-    }, [changeTodolistTitle, id])
+    const ChangeTodolist = useCallback((title: string) => {
+        changeTodolistTitle({todolistId: id, title})
+    }, [id])
 
     const allClassName = filter === 'all' ? "outlined" : "text"
     const activeClassName = filter === 'active' ? "outlined" : "text"
@@ -85,7 +77,7 @@ export const Todolist: React.FC<PropsType> = React.memo((
     }
 
     useEffect(() => {
-        dispatch(fetchTasks(id))
+        fetchTasks(id)
     }, [])
 
     return (
@@ -93,7 +85,7 @@ export const Todolist: React.FC<PropsType> = React.memo((
             <div>
                 <h3>
                     <EditableSpan value={title} callBack={ChangeTodolist} disabled={entityStatus === 'loading'}/>
-                    <IconButton aria-label="delete" size="small" onClick={onClickTitleHandler}
+                    <IconButton aria-label="delete" size="small" onClick={onClickRemoveHandler}
                                 disabled={entityStatus === 'loading'}>
                         <Delete/>
                     </IconButton>
@@ -122,3 +114,11 @@ export const Todolist: React.FC<PropsType> = React.memo((
         </div>
     )
 })
+
+type PropsType = {
+    id: string
+    title: string
+    tasks: TaskDomainType[]
+    filter: FilterType,
+    entityStatus: RequestStatusType
+}

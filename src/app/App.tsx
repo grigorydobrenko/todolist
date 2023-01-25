@@ -3,11 +3,13 @@ import './App.css'
 import {AppBar, Button, CircularProgress, Container, LinearProgress, Toolbar, Typography} from "@mui/material"
 import {TodolistsLists} from "../features/todolists/TodolistsLists"
 import {CustomizedSnackbars} from "../components/errorSnackbar/ErrorSnackbar";
-import {Login} from "../features/login/Login";
+import {Login} from "../features/auth/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "./hooks";
-import {logout} from "../features/login/auth-reducer";
+import {logout} from "../features/auth/auth-reducer";
 import {initializeApp} from "./app-reducer";
+import {selectIsInitialized, selectStatus} from "./selectors";
+import {authSelectors} from "../features/auth";
 
 export enum ROUTS {
     DEFAULT = '/',
@@ -15,13 +17,12 @@ export enum ROUTS {
     NOT_FOUND = '/404',
 }
 
-
 function App() {
 
-    const status = useAppSelector(state => state.app.status)
+    const status = useAppSelector(selectStatus)
     const dispatch = useAppDispatch()
-    const isInitialized = useAppSelector(state => state.app.isInitialized)
-    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const isInitialized = useAppSelector(selectIsInitialized)
+    const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn)
 
     const logOut = () => {
         dispatch(logout())
