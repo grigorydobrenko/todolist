@@ -50,9 +50,14 @@ export const logout = createAsyncThunk('auth/logout', async (param, thunkAPI) =>
     }
 })
 
+export const asyncActions = {
+    login,
+    logout
+}
+
 // slice
 
-const slice = createSlice({
+export const slice = createSlice({
     name: 'auth',
     initialState: {
         isLoggedIn: false as boolean

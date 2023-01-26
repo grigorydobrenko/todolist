@@ -3,12 +3,14 @@ import {ComponentMeta, ComponentStory} from '@storybook/react'
 import {action} from "@storybook/addon-actions"
 import TaskComponent from "./TaskComponent"
 import {TaskPriorities, TaskStatuses} from "../../../../api/todolist-api"
+import {ReduxStoreProviderDecorator} from "../../../../stories/decorators/ReduxStoreProviderDecorator";
 
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
     title: 'Todolist/TaskComponent',
     component: TaskComponent,
+    decorators: [ReduxStoreProviderDecorator],
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     args: {
         changeTaskStatus: action('changeTaskStatus'),
@@ -32,13 +34,13 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof TaskComponent> = (args) => <TaskComponent {...args} />;
 
-export const TaskIsDOneStory = Template.bind({});
+export const TaskIsDoneStory = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-TaskIsDOneStory.args = {};
+TaskIsDoneStory.args = {};
 
-export const TaskIsNotDOneStory = Template.bind({});
+export const TaskIsNotDoneStory = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-TaskIsNotDOneStory.args = {
+TaskIsNotDoneStory.args = {
     task: {
         id: '2', title: 'ts', status: TaskStatuses.New, description: '',
         priority: TaskPriorities.Low,

@@ -13,6 +13,7 @@ import {Navigate} from "react-router-dom";
 import {ROUTS} from "../../app/App";
 import {login} from "./auth-reducer";
 import {selectIsLoggedIn} from "./selectors";
+import {authActions} from "./index";
 
 
 type FormikErrorType = {
@@ -31,6 +32,7 @@ export type LoginPayloadType = {
 export const Login = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
+
 
     const formik = useFormik({
         initialValues: {
@@ -54,7 +56,7 @@ export const Login = () => {
             return errors
         },
         onSubmit: async (values: LoginPayloadType, formikHelpers: FormikHelpers<LoginPayloadType>) => {
-            const action = await dispatch(login(values))
+            const action = await dispatch(authActions.login(values))
 
             if (login.rejected.match(action)) {
                 if (action.payload?.fieldsErrors?.length) {

@@ -3,11 +3,11 @@ import './App.css'
 import {AppBar, Button, CircularProgress, Container, LinearProgress, Toolbar, Typography} from "@mui/material"
 import {TodolistsLists} from "../features/todolists/TodolistsLists"
 import {CustomizedSnackbars} from "../components/errorSnackbar/ErrorSnackbar";
-import {Login} from "../features/auth/Login";
+import {Login} from "../features/auth";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "./hooks";
 import {logout} from "../features/auth/auth-reducer";
-import {initializeApp} from "./app-reducer";
+import {asyncActions} from "./app-reducer";
 import {selectIsInitialized, selectStatus} from "./selectors";
 import {authSelectors} from "../features/auth";
 
@@ -29,7 +29,7 @@ function App() {
     }
 
     useEffect(() => {
-        dispatch(initializeApp())
+        dispatch(asyncActions.initializeApp())
     }, [])
 
     if (!isInitialized) {

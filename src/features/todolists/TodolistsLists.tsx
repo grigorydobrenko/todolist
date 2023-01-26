@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from "react"
 import {useActions, useAppSelector} from "../../app/hooks"
-import {Grid, Paper} from "@mui/material"
+import {Grid} from "@mui/material"
 import AddItemForm from "../../components/addItemForm/AddItemForm";
 import {Todolist} from "./todolist/Todolist";
 import {Navigate} from "react-router-dom";
@@ -33,13 +33,13 @@ export const TodolistsLists: React.FC = () => {
     }
 
     return <>
-        <Grid container style={{padding: '20px'}}>
+        <Grid container sx={{padding: '20px'}}>
             <AddItemForm addItem={addTodolist}/>
         </Grid>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} sx={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
             {todolists.map(t => {
                 return <Grid item key={t.id}>
-                    <Paper style={{padding: '10px'}}>
+                    <div style={{width: '300px', overflow: "hidden"}}>
                         <Todolist
                             key={t.id}
                             id={t.id}
@@ -48,7 +48,7 @@ export const TodolistsLists: React.FC = () => {
                             tasks={tasks[t.id]}
                             filter={t.filter}
                         />
-                    </Paper>
+                    </div>
                 </Grid>
             })
             }

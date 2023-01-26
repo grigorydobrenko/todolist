@@ -25,6 +25,10 @@ export const initializeApp = createAsyncThunk('app/initialize', async (param, {d
     return
 })
 
+export const asyncActions = {
+    initializeApp
+}
+
 // slice
 
 const slice = createSlice({

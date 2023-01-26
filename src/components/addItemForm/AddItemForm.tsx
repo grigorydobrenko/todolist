@@ -57,7 +57,7 @@ const AddItemForm = memo((props: AddItemFormPropsType) => {
                 variant="outlined"
                 disabled={props.disabled}
                 size="small"/>
-            <IconButton color="primary" onClick={addItemHandler} disabled={props.disabled}>
+            <IconButton color="primary" onClick={addItemHandler} disabled={props.disabled} sx={{marginLeft: '10px'}}>
                 <AddBox/>
             </IconButton>
         </div>
