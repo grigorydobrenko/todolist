@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect} from "react"
-import {useActions, useAppSelector} from "../../app/hooks"
+import {useActions, useAppDispatch, useAppSelector} from "../../app/hooks"
 import {Grid} from "@mui/material"
-import AddItemForm from "../../components/addItemForm/AddItemForm";
+import AddItemForm, {AddItemFormSubmitHelperType} from "../../components/addItemForm/AddItemForm";
 import {Todolist} from "./todolist/Todolist";
 import {Navigate} from "react-router-dom";
 import {ROUTS} from "../../app/App";
@@ -13,10 +13,27 @@ export const TodolistsLists: React.FC = () => {
     let tasks = useAppSelector(state => state.tasks)
     const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn)
 
-    const {fetchTodolists, createTodolist} = useActions(todolistsActions)
+    const {fetchTodolists} = useActions(todolistsActions)
 
-    const addTodolist = useCallback((todolistTitle: string) => {
-        createTodolist(todolistTitle)
+    const dispatch = useAppDispatch()
+
+    const addTodolist = useCallback(async (todolistTitle: string, helper: AddItemFormSubmitHelperType) => {
+        let thunk = todolistsActions.createTodolist(todolistTitle)
+
+        const resultAction = await dispatch(thunk)
+
+        if (todolistsActions.createTodolist.rejected.match(resultAction)) {
+            if (resultAction.payload?.errors?.length) {
+                const errorMessage = resultAction.payload?.errors[0]
+                helper.setError(errorMessage)
+            } else {
+                helper.setError('Some error occurred')
+            }
+        }
+        else {
+            helper.setNewTitle('')
+        }
+        // createTodolist(todolistTitle)
     }, [])
 
     useEffect(() => {

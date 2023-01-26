@@ -5,6 +5,7 @@ import thunk from "redux-thunk"
 import {appReducer} from "./app-reducer";
 import {authReducer} from "../features/auth/auth-reducer";
 import {configureStore} from "@reduxjs/toolkit";
+import {FieldError} from "../api/todolist-api";
 
 
 const rootReducer = combineReducers({
@@ -29,5 +30,7 @@ export type AppDispatch = typeof store.dispatch
 
 // @ts-ignore
 window.store = store
+
+export type ThunkError = { rejectValue: { errors: string[], fieldsErrors?: FieldError[] } }
 
 

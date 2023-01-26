@@ -2,8 +2,13 @@ import {ModelType, ResultCode, TaskType, todolistAPI} from "../../api/todolist-a
 import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios, {AxiosError} from "axios";
-import {handleServerAppError, handleServerNetWorkError} from "../../utils/error-utils";
-import {AppRootState} from "../../app/store";
+import {
+    handleAsyncServerAppError,
+    handleAsyncServerNetworkError,
+    handleServerAppError,
+    handleServerNetWorkError
+} from "../../utils/error-utils";
+import {AppRootState, ThunkError} from "../../app/store";
 import {todolistsActions} from "./";
 
 // thunks
@@ -42,28 +47,20 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (param: { t
     }
 })
 
-export const createTask = createAsyncThunk('tasks/addTask', async (param: { todolistId: string, title: string }, {
-    dispatch,
-    rejectWithValue
-}) => {
-    dispatch(setAppStatusAC({status: 'loading'}))
+export const createTask = createAsyncThunk<TaskType, { title: string, todolistId: string }, ThunkError>
+('tasks/addTask', async (param, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const res = await todolistAPI.createTask(param.todolistId, param.title)
         if (res.data.resultCode === ResultCode.OK) {
 
-            dispatch(setAppStatusAC({status: 'succeeded'}))
+            thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
             return res.data.data.item
         } else {
-            handleServerAppError(dispatch, res.data)
-            return rejectWithValue(null)
+            return handleAsyncServerAppError(res.data, thunkAPI, false)
         }
-    } catch (e) {
-        const err = e as Error | AxiosError
-        if (axios.isAxiosError(err)) {
-            handleServerNetWorkError(dispatch, err)
-            return rejectWithValue(null)
-        }
-        return rejectWithValue(null)
+    } catch (error) {
+        return handleAsyncServerNetworkError(error as AxiosError, thunkAPI, false)
     }
 })
 

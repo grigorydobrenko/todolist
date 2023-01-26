@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from "react"
-import AddItemForm from "../../../components/addItemForm/AddItemForm"
+import AddItemForm, {AddItemFormSubmitHelperType} from "../../../components/addItemForm/AddItemForm"
 import EditableSpan from "../../../components/editableSpan/EditableSpan"
 import {Button, IconButton, Paper} from "@mui/material"
 import {Delete} from "@mui/icons-material"
@@ -7,7 +7,7 @@ import TaskComponent from "./task/TaskComponent"
 import {TaskStatuses} from "../../../api/todolist-api"
 import {FilterType} from "../todolists-reducer";
 import {TaskDomainType} from "../tasks-reducer";
-import {useActions} from "../../../app/hooks";
+import {useActions, useAppDispatch} from "../../../app/hooks";
 import {RequestStatusType} from "../../../app/app-reducer";
 import {tasksActions, todolistsActions} from "../index";
 
@@ -22,11 +22,27 @@ export const Todolist: React.FC<PropsType> = React.memo((
     }
 ) => {
 
-    const {fetchTasks, createTask} = useActions(tasksActions)
+    const {fetchTasks} = useActions(tasksActions)
     const {removeTodolist, changeTodolistTitle, changeTodolistFilterAC} = useActions(todolistsActions)
 
-    const addNewTask = useCallback((title: string) => {
-        createTask({todolistId: id, title})
+
+    const dispatch = useAppDispatch()
+
+    const addNewTask = useCallback(async (title: string, helper: AddItemFormSubmitHelperType) => {
+        let thunk = tasksActions.createTask({title: title, todolistId: id})
+        const resultAction = await dispatch(thunk)
+
+        if (tasksActions.createTask.rejected.match(resultAction)) {
+            if (resultAction.payload?.errors?.length) {
+                const errorMessage = resultAction.payload?.errors[0]
+                helper.setError(errorMessage)
+            } else {
+                helper.setError('Some error occurred')
+            }
+        }
+        else {
+            helper.setNewTitle('')
+        }
     }, [id])
 
     const onClickRemoveHandler = () => {

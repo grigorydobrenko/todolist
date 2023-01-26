@@ -1,6 +1,6 @@
 import {setAppStatusAC} from "../../app/app-reducer";
 import {LoginPayloadType} from "./Login";
-import {authAPI, FieldsError, ResultCode} from "../../api/todolist-api";
+import {authAPI, FieldError, ResultCode} from "../../api/todolist-api";
 import {handleServerAppError, handleServerNetWorkError} from "../../utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
@@ -9,7 +9,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 // thunks
 
 export const login = createAsyncThunk<undefined, LoginPayloadType, {
-    rejectValue: { errors: string[], fieldsErrors?: FieldsError[] }
+    rejectValue: { errors: string[], fieldsErrors?: FieldError[] }
 }>('auth/auth', async (data: LoginPayloadType, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
     try {

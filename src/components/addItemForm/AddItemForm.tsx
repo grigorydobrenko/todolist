@@ -3,16 +3,17 @@ import {IconButton, TextField} from "@mui/material";
 import {AddBox} from "@mui/icons-material";
 
 type AddItemFormPropsType = {
-    addItem: (title: string) => void
+    addItem: (title: string, helper: AddItemFormSubmitHelperType) => void
     disabled?: boolean
 }
 
+export type AddItemFormSubmitHelperType = { setError: (error: string) => void, setNewTitle: (title: string) => void }
 
 const AddItemForm = memo((props: AddItemFormPropsType) => {
     const {addItem} = props
 
-    const [newTitle, setNewTitle] = useState<string>('')
-    const [error, setError] = useState<boolean>(false)
+    const [newTitle, setNewTitle] = useState('')
+    const [error, setError] = useState<string | null>(null)
 
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,26 +25,39 @@ const AddItemForm = memo((props: AddItemFormPropsType) => {
             addNewItem()
         }
         if (error) {
-            setError(false)
+            setError(null)
         }
     }
-
 
     const addItemHandler = () => {
         addNewItem()
     }
 
-    const addNewItem = () => {
+    const addNewItem = async () => {
         const trimmedTitle = newTitle.trim()
 
         if (trimmedTitle) {
-            addItem(newTitle)
-            setNewTitle('')
-            setError(false)
-        } else {
-            setError(true)
+
+            addItem(newTitle, {setError, setNewTitle})
+        }
+            // setNewTitle('')
+            //     } catch (e) {
+            //         const err = e as AxiosError
+            //
+            //         setError(err.message)
+            //         console.log(typeof err.message)
+            //         // if (axios.isAxiosError(err)) {
+            //         //     console.log(err.message)
+            //         //     setError(err.message)
+            //         // }
+            //
+            //     }
+        // }
+        else {
+            setError('Title is required')
         }
     }
+
 
     return (
         <div>
@@ -53,7 +67,7 @@ const AddItemForm = memo((props: AddItemFormPropsType) => {
                 onKeyDown={onKeyDownHandler}
                 error={!!error}
                 label='Title'
-                helperText={error && 'Title is required'}
+                helperText={error}
                 variant="outlined"
                 disabled={props.disabled}
                 size="small"/>
