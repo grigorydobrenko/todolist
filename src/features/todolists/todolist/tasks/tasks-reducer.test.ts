@@ -1,6 +1,6 @@
-import {createTask, deleteTask, tasksReducer, TasksStateType, updateTask} from '../tasks-reducer'
-import {TaskPriorities, TaskStatuses} from "../../../api/types";
-import {createTodolist, removeTodolist} from "../todolists-reducer";
+import {createTask, deleteTask, tasksReducer, TasksStateType, updateTask} from './tasks-reducer'
+import {TaskPriorities, TaskStatuses} from "../../../../api/types";
+import {createTodolist, removeTodolist} from "../../todolists-reducer";
 
 
 let startState: TasksStateType
@@ -81,7 +81,7 @@ beforeEach(() => {
 })
 
 
-test('correct task should be deleted from correct array', () => {
+test('correct tasks should be deleted from correct array', () => {
 
     const param = {todolistId: 'todolistId2', taskId: '2'}
 
@@ -151,7 +151,7 @@ test('correct task should be deleted from correct array', () => {
     })
 })
 
-test('correct task should be added to correct array', () => {
+test('correct tasks should be added to correct array', () => {
 
     const task = {
         id: 'id',
@@ -177,7 +177,7 @@ test('correct task should be added to correct array', () => {
     expect(endState['todolistId1'][0].status).toBe(TaskStatuses.New)
 })
 
-test('status of specified task should be changed', () => {
+test('status of specified tasks should be changed', () => {
     const updateModel = {todolistId: 'todolistId2', taskId: '2', value: {status: TaskStatuses.New}}
 
     const action = updateTask.fulfilled(updateModel, 'requestId', updateModel)
@@ -188,7 +188,7 @@ test('status of specified task should be changed', () => {
     expect(endState['todolistId1'][1].status).toBe(TaskStatuses.Completed)
 })
 
-test('task title should be changed', () => {
+test('tasks title should be changed', () => {
     const updateModel = {taskId: '1', todolistId: 'todolistId2', value: {title: 'salt'}}
 
     const action = updateTask.fulfilled(updateModel, 'requestId', updateModel)

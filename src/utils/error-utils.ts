@@ -1,20 +1,6 @@
 import {setAppErrorAC, setAppStatusAC} from "../app/app-reducer";
 import {AxiosError} from "axios";
-import {CommonResponseType} from "../api/types";
-
-// export const handleServerAppError = <D>(dispatch: Dispatch, data: ResponseType<D>, showError: boolean = true) => {
-//     if (showError) {
-//         dispatch(setAppErrorAC({error: data.messages.length ? data.messages[0] : 'some error'}))
-//     }
-//     dispatch(setAppStatusAC({status: 'failed'}))
-// }
-//
-// export const handleServerNetWorkError = (dispatch: Dispatch, error: { message: string }, showError: boolean = true) => {
-//     if (showError) {
-//         dispatch(setAppErrorAC({error: error.message ? error.message : 'Some error occurred'}))
-//     }
-//     dispatch(setAppStatusAC({status: 'failed'}))
-// }
+import {CommonResponseType, FieldError} from "../api/types";
 
 export const handleAsyncServerAppError = <D>(data: CommonResponseType<D>, thunkAPI: ThunkAPIType, showError: boolean = true) => {
     if (showError) {
@@ -37,6 +23,7 @@ type ThunkAPIType = {
     rejectWithValue: Function
 }
 
+export type ThunkError = { rejectValue: { errors: string[], fieldsErrors?: FieldError[] } }
 
 
 

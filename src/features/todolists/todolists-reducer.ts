@@ -2,16 +2,9 @@ import {todolistAPI} from "../../api/todolist-api"
 import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
-import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
-import {ThunkError} from "../../app/store";
+import {handleAsyncServerAppError, handleAsyncServerNetworkError, ThunkError} from "../../utils/error-utils";
 import {ResultCode, TodolistType} from "../../api/types";
 
-
-//
-// return handleAsyncServerAppError(res.data, thunkAPI)
-// }
-// } catch (error) {
-//     return handleAsyncServerNetworkError(error as AxiosError, thunkAPI)
 
 // thunks
 

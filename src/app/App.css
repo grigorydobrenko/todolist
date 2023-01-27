@@ -2,3 +2,10 @@
     display: flex;
     justify-content: space-between;
 }
+
+.preloader {
+    position: fixed;
+    top: 30%;
+    text-align: center;
+    width: 100%
+}

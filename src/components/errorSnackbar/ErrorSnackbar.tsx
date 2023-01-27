@@ -2,8 +2,8 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {setAppErrorAC} from "../../app/app-reducer";
+import {useAppDispatch, useAppSelector} from "../../utils/redux-utils";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -13,7 +13,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 export const CustomizedSnackbars = () => {
-    const error = useAppSelector<string | null>(state => state.app.error)
+    const error = useAppSelector(state => state.app.error)
     const dispatch = useAppDispatch()
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -33,5 +33,5 @@ export const CustomizedSnackbars = () => {
                 </Alert>
             </Snackbar>
         </Stack>
-    );
+    )
 }

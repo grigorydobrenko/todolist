@@ -3,15 +3,13 @@ import {LoginPayloadType} from "./Login";
 import {authAPI} from "../../api/todolist-api";
 import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {FieldError, ResultCode} from "../../api/types";
-import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
+import {ResultCode} from "../../api/types";
+import {handleAsyncServerAppError, handleAsyncServerNetworkError, ThunkError} from "../../utils/error-utils";
 
 
 // thunks
 
-export const login = createAsyncThunk<undefined, LoginPayloadType, {
-    rejectValue: { errors: string[], fieldsErrors?: FieldError[] }
-}>('auth/auth', async (data: LoginPayloadType, thunkAPI) => {
+export const login = createAsyncThunk<undefined, LoginPayloadType, ThunkError>('auth/auth', async (data: LoginPayloadType, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const res = await authAPI.login(data)

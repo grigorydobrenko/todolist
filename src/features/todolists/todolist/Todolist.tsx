@@ -1,15 +1,16 @@
 import React, {useCallback, useEffect} from "react"
-import AddItemForm, {AddItemFormSubmitHelperType} from "../../../components/addItemForm/AddItemForm"
-import EditableSpan from "../../../components/editableSpan/EditableSpan"
+import {AddItemForm, AddItemFormSubmitHelperType} from "../../../components/addItemForm/AddItemForm"
 import {Button, IconButton, Paper} from "@mui/material"
 import {Delete} from "@mui/icons-material"
-import TaskComponent from "./task/TaskComponent"
+import TaskComponent from "./tasks/TaskComponent"
 import {FilterType} from "../todolists-reducer";
-import {TaskDomainType} from "../tasks-reducer";
-import {useActions, useAppDispatch} from "../../../app/hooks";
+import {TaskDomainType} from "./tasks/tasks-reducer";
 import {RequestStatusType} from "../../../app/app-reducer";
-import {tasksActions, todolistsActions} from "../index";
+import {todolistsActions} from "../index";
 import {TaskStatuses} from "../../../api/types";
+import {useActions, useAppDispatch} from "../../../utils/redux-utils";
+import {EditableSpan} from "../../../components/editableSpan/EditableSpan";
+import {tasksActions} from "./tasks";
 
 
 export const Todolist: React.FC<PropsType> = React.memo((
@@ -24,7 +25,6 @@ export const Todolist: React.FC<PropsType> = React.memo((
 
     const {fetchTasks} = useActions(tasksActions)
     const {removeTodolist, changeTodolistTitle, changeTodolistFilterAC} = useActions(todolistsActions)
-
 
     const dispatch = useAppDispatch()
 
@@ -96,6 +96,7 @@ export const Todolist: React.FC<PropsType> = React.memo((
             <AddItemForm addItem={addNewTask} disabled={entityStatus === 'loading'}/>
 
             {!tasksForTodolist.length && <div style={{padding: '10px', color: 'grey'}}>No tasks</div>}
+
             {tasksForTodolist.map(t =>
                 <TaskComponent
                     key={t.id}

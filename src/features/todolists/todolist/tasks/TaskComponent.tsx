@@ -1,10 +1,10 @@
 import React, {ChangeEvent, useCallback} from 'react'
 import {Checkbox, IconButton} from "@mui/material"
-import EditableSpan from "../../../../components/editableSpan/EditableSpan"
+import {EditableSpan} from "../../../../components/editableSpan/EditableSpan"
 import {Delete} from "@mui/icons-material"
-import {useActions} from "../../../../app/hooks";
-import {tasksActions} from "../../index";
 import {TaskStatuses, TaskType} from "../../../../api/types";
+import {useActions} from "../../../../utils/redux-utils";
+import {tasksActions} from "./";
 
 
 const TaskComponent = React.memo((props: TaskPropsType) => {

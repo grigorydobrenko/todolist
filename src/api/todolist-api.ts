@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios'
 import {LoginPayloadType} from "../features/auth/Login";
-import {UpdateTaskType} from "../features/todolists/tasks-reducer";
+import {UpdateTaskType} from "../features/todolists/todolist/tasks/tasks-reducer";
 import {AuthMeResponseType, CommonResponseType, ModelType, ResponseGetTasksType, TaskType, TodolistType} from "./types";
 
 

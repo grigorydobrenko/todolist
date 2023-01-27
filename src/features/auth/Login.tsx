@@ -8,31 +8,17 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {FormikHelpers, useFormik} from "formik";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {Navigate} from "react-router-dom";
 import {ROUTS} from "../../app/App";
 import {login} from "./auth-reducer";
 import {selectIsLoggedIn} from "./selectors";
 import {authActions} from "./index";
-
-
-type FormikErrorType = {
-    email?: string
-    password?: string
-}
-
-export type LoginPayloadType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha: string
-}
+import {useAppDispatch, useAppSelector} from "../../utils/redux-utils";
 
 
 export const Login = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
-
 
     const formik = useFormik({
         initialValues: {
@@ -65,8 +51,7 @@ export const Login = () => {
                 }
             }
         },
-    });
-
+    })
 
     if (isLoggedIn) {
         return <Navigate to={ROUTS.DEFAULT}/>
@@ -100,7 +85,7 @@ export const Login = () => {
                                    {...formik.getFieldProps('password')}/>
                         {formik.touched.password && formik.errors.password &&
                             <div style={{color: 'red'}}>{formik.errors.password}</div>}
-                        <FormControlLabel label={'password'}
+                        <FormControlLabel label={'Remember me'}
                                           control={<Checkbox {...formik.getFieldProps('rememberMe')}
                                                              checked={formik.values.rememberMe}
                                           />}/>
@@ -112,4 +97,16 @@ export const Login = () => {
             </form>
         </Grid>
     </Grid>
+}
+
+type FormikErrorType = {
+    email?: string
+    password?: string
+}
+
+export type LoginPayloadType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha: string
 }

@@ -3,7 +3,7 @@ import {Provider} from "react-redux"
 import {combineReducers} from 'redux'
 import {v1} from 'uuid'
 import {AppRootState, RootReducerType} from '../../app/store'
-import {tasksReducer} from '../../features/todolists/tasks-reducer'
+import {tasksReducer} from '../../features/todolists/todolist/tasks/tasks-reducer'
 import {todolistsReducer} from '../../features/todolists/todolists-reducer'
 import {appReducer} from "../../app/app-reducer";
 import {authReducer} from "../../features/auth/auth-reducer";

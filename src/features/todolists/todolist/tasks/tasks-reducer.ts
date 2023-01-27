@@ -1,11 +1,11 @@
-import {todolistAPI} from "../../api/todolist-api"
-import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
+import {todolistAPI} from "../../../../api/todolist-api"
+import {RequestStatusType, setAppStatusAC} from "../../../../app/app-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
-import {handleAsyncServerAppError, handleAsyncServerNetworkError,} from "../../utils/error-utils";
-import {AppRootState, ThunkError} from "../../app/store";
-import {todolistsActions} from "./";
-import {ModelType, ResultCode, TaskType} from "../../api/types";
+import {handleAsyncServerAppError, handleAsyncServerNetworkError, ThunkError,} from "../../../../utils/error-utils";
+import {AppRootState} from "../../../../app/store";
+import {todolistsActions} from "../../index";
+import {ModelType, ResultCode, TaskType} from "../../../../api/types";
 
 // thunks
 
@@ -87,7 +87,7 @@ export const updateTask = createAsyncThunk('tasks/updateTask', async (param: { t
             dispatch(changeTaskEntityStatusAC({todolistId: param.todolistId, taskId: param.taskId, status: 'idle'}))
         }
     } else {
-        return rejectWithValue('task not found in state')
+        return rejectWithValue('tasks not found in state')
     }
 })
 

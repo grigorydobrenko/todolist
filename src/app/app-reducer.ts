@@ -1,4 +1,3 @@
-import {setIsLoggedIn} from "../features/auth/auth-reducer";
 import {authAPI} from "../api/todolist-api";
 import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
@@ -7,13 +6,11 @@ import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../utils
 
 // thunks
 
-export const initializeApp = createAsyncThunk('app/initialize', async (param, thunkAPI) => {
-
+export const initializeApp = createAsyncThunk('app/initializeApp', async (param, thunkAPI) => {
     try {
         const res = await authAPI.me()
         if (res.data.resultCode === ResultCode.OK) {
-            thunkAPI.dispatch(setIsLoggedIn({value: true}))
-            return
+            return {value: true}
         } else {
             return handleAsyncServerAppError(res.data, thunkAPI)
         }
@@ -28,7 +25,7 @@ export const asyncActions = {
 
 // slice
 
-const slice = createSlice({
+export const slice = createSlice({
     name: 'app',
     initialState: {
         status: 'idle' as RequestStatusType,

@@ -1,15 +1,15 @@
 import React, {useCallback, useEffect} from "react"
-import {useActions, useAppDispatch, useAppSelector} from "../../app/hooks"
 import {Grid} from "@mui/material"
-import AddItemForm, {AddItemFormSubmitHelperType} from "../../components/addItemForm/AddItemForm";
+import {AddItemForm, AddItemFormSubmitHelperType} from "../../components/addItemForm/AddItemForm";
 import {Todolist} from "./todolist/Todolist";
 import {Navigate} from "react-router-dom";
 import {ROUTS} from "../../app/App";
 import {authSelectors} from "../auth";
-import {todolistsActions} from "./index";
+import {todolistsActions, todolistsSelectors} from "./index";
+import {useActions, useAppDispatch, useAppSelector} from "../../utils/redux-utils";
 
 export const TodolistsList: React.FC = () => {
-    let todolists = useAppSelector(state => state.todolists)
+    let todolists = useAppSelector(todolistsSelectors.todolists)
     let tasks = useAppSelector(state => state.tasks)
     const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn)
 
