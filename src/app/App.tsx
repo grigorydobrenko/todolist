@@ -6,11 +6,10 @@ import {CustomizedSnackbars} from "../components/errorSnackbar/ErrorSnackbar";
 import {Login} from "../features/auth";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {selectIsInitialized} from "./selectors";
-import {useActions} from "../utils/redux-utils";
-import {appActions} from "./index";
+import {useAppDispatch, useAppSelector} from "../utils/redux-utils";
 import {Header} from "./AppBar";
 import {PageNotFound} from "../components/PageNotFound";
-import {useSelector} from "react-redux";
+import {initializeApp} from "./app-reducer";
 
 
 export enum ROUTS {
@@ -21,13 +20,13 @@ export enum ROUTS {
 
 function App() {
 
-    const isInitialized = useSelector(selectIsInitialized)
+    const isInitialized = useAppSelector(selectIsInitialized)
 
-    const {initializeApp} = useActions(appActions)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        initializeApp()
-    }, [])
+        dispatch(initializeApp())
+    }, [dispatch])
 
     if (!isInitialized) {
         return <div

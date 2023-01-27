@@ -1,22 +1,19 @@
 import {authAPI} from "../api/todolist-api";
-import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ResultCode} from "../api/types";
-import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../utils/error-utils";
+import {setIsLoggedIn} from "../features/auth/auth-reducer";
 
-// thunks
+// thunk
 
 export const initializeApp = createAsyncThunk('app/initializeApp', async (param, thunkAPI) => {
-    try {
-        const res = await authAPI.me()
-        if (res.data.resultCode === ResultCode.OK) {
-            return {value: true}
-        } else {
-            return handleAsyncServerAppError(res.data, thunkAPI)
-        }
-    } catch (error) {
-        return handleAsyncServerNetworkError(error as AxiosError, thunkAPI)
+
+    const res = await authAPI.me()
+    if (res.data.resultCode === ResultCode.OK) {
+        thunkAPI.dispatch(setIsLoggedIn({value: true}))
+    } else {
+        return
     }
+
 })
 
 export const asyncActions = {

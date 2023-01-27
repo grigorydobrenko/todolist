@@ -7,10 +7,11 @@ import {ROUTS} from "../../app/App";
 import {authSelectors} from "../auth";
 import {todolistsActions, todolistsSelectors} from "./index";
 import {useActions, useAppDispatch, useAppSelector} from "../../utils/redux-utils";
+import {tasksSelectors} from "./todolist/tasks";
 
 export const TodolistsList: React.FC = () => {
     let todolists = useAppSelector(todolistsSelectors.todolists)
-    let tasks = useAppSelector(state => state.tasks)
+    let tasks = useAppSelector(tasksSelectors.tasks)
     const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn)
 
     const {fetchTodolists} = useActions(todolistsActions)
