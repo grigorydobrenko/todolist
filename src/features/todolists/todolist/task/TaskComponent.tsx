@@ -2,9 +2,9 @@ import React, {ChangeEvent, useCallback} from 'react'
 import {Checkbox, IconButton} from "@mui/material"
 import EditableSpan from "../../../../components/editableSpan/EditableSpan"
 import {Delete} from "@mui/icons-material"
-import {TaskStatuses, TaskType} from "../../../../api/todolist-api"
 import {useActions} from "../../../../app/hooks";
 import {tasksActions} from "../../index";
+import {TaskStatuses, TaskType} from "../../../../api/types";
 
 
 const TaskComponent = React.memo((props: TaskPropsType) => {

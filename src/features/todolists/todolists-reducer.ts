@@ -1,57 +1,42 @@
-import {ResultCode, todolistAPI, TodolistType} from "../../api/todolist-api"
+import {todolistAPI} from "../../api/todolist-api"
 import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import axios, {AxiosError} from "axios";
-import {
-    handleAsyncServerAppError,
-    handleAsyncServerNetworkError,
-    handleServerAppError,
-    handleServerNetWorkError
-} from "../../utils/error-utils";
+import {AxiosError} from "axios";
+import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
 import {ThunkError} from "../../app/store";
+import {ResultCode, TodolistType} from "../../api/types";
 
+
+//
+// return handleAsyncServerAppError(res.data, thunkAPI)
+// }
+// } catch (error) {
+//     return handleAsyncServerNetworkError(error as AxiosError, thunkAPI)
 
 // thunks
 
-export const fetchTodolists = createAsyncThunk('todolists/fetchTodolists', async (param, {
-    dispatch,
-    rejectWithValue
-}) => {
-    dispatch(setAppStatusAC({status: 'loading'}))
+export const fetchTodolists = createAsyncThunk<{ todos: TodolistType[] }, undefined, ThunkError>('todolists/fetchTodolists', async (param, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const res = await todolistAPI.getTodolists()
-        dispatch(setAppStatusAC({status: 'succeeded'}))
+        thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
         return {todos: res.data}
-    } catch (e) {
-
-        const err = e as Error | AxiosError
-        if (axios.isAxiosError(err)) {
-            handleServerNetWorkError(dispatch, err)
-            dispatch(setAppStatusAC({status: 'failed'}))
-            return rejectWithValue(null)
-        }
-        return rejectWithValue(null)
+    } catch (error) {
+        return handleAsyncServerNetworkError(error as AxiosError, thunkAPI)
     }
 })
 
-export const removeTodolist = createAsyncThunk('todolists/removeTodolist', async (todolistId: string, {
-    dispatch,
-    rejectWithValue
-}) => {
+export const removeTodolist = createAsyncThunk('todolists/removeTodolist', async (todolistId: string, thunkAPI) => {
+    const {dispatch} = thunkAPI
     dispatch(setAppStatusAC({status: 'loading'}))
     try {
         dispatch(changeTodolistEntityStatusAC({id: todolistId, status: 'loading'}))
         await todolistAPI.deleteTodolist(todolistId)
         dispatch(setAppStatusAC({status: 'succeeded'}))
         return {id: todolistId}
-    } catch (e) {
+    } catch (error) {
         dispatch(changeTodolistEntityStatusAC({id: todolistId, status: 'idle'}))
-        const err = e as Error | AxiosError
-        if (axios.isAxiosError(err)) {
-            handleServerNetWorkError(dispatch, err)
-            return rejectWithValue(null)
-        }
-        return rejectWithValue(null)
+        return handleAsyncServerNetworkError(error as AxiosError, thunkAPI)
     }
 })
 
@@ -70,10 +55,8 @@ export const createTodolist = createAsyncThunk<{ todolist: TodolistType }, strin
     }
 })
 
-export const changeTodolistTitle = createAsyncThunk('todolists/changeTodolistTitle', async (param: { todolistId: string, title: string }, {
-    dispatch,
-    rejectWithValue
-}) => {
+export const changeTodolistTitle = createAsyncThunk('todolists/changeTodolistTitle', async (param: { todolistId: string, title: string }, thunkAPI) => {
+    const {dispatch} = thunkAPI
     dispatch(setAppStatusAC({status: 'loading'}))
     dispatch(changeTodolistEntityStatusAC({id: param.todolistId, status: 'loading'}))
     try {
@@ -82,16 +65,10 @@ export const changeTodolistTitle = createAsyncThunk('todolists/changeTodolistTit
             dispatch(setAppStatusAC({status: 'succeeded'}))
             return {id: param.todolistId, title: param.title}
         } else {
-            handleServerAppError(dispatch, res.data)
-            return rejectWithValue(null)
+            return handleAsyncServerAppError(res.data, thunkAPI)
         }
-    } catch (e) {
-        const err = e as Error | AxiosError
-        if (axios.isAxiosError(err)) {
-            handleServerNetWorkError(dispatch, err)
-            return rejectWithValue(null)
-        }
-        return rejectWithValue(null)
+    } catch (error) {
+        return handleAsyncServerNetworkError(error as AxiosError, thunkAPI, false)
     } finally {
         dispatch(changeTodolistEntityStatusAC({id: param.todolistId, status: 'idle'}))
     }

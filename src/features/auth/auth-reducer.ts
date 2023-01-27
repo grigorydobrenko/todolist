@@ -1,9 +1,10 @@
 import {setAppStatusAC} from "../../app/app-reducer";
 import {LoginPayloadType} from "./Login";
-import {authAPI, FieldError, ResultCode} from "../../api/todolist-api";
-import {handleServerAppError, handleServerNetWorkError} from "../../utils/error-utils";
-import axios, {AxiosError} from "axios";
+import {authAPI} from "../../api/todolist-api";
+import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {FieldError, ResultCode} from "../../api/types";
+import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
 
 
 // thunks
@@ -18,15 +19,10 @@ export const login = createAsyncThunk<undefined, LoginPayloadType, {
             thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
             return
         } else {
-            handleServerAppError(thunkAPI.dispatch, res.data)
-            return thunkAPI.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors})
+            return handleAsyncServerAppError(res.data, thunkAPI)
         }
-    } catch (e) {
-        const err = e as Error | AxiosError
-        if (axios.isAxiosError(err)) {
-            handleServerNetWorkError(thunkAPI.dispatch, err)
-            return thunkAPI.rejectWithValue({errors: [err.message], fieldsErrors: undefined})
-        }
+    } catch (error) {
+        return handleAsyncServerNetworkError(error as AxiosError, thunkAPI)
     }
 })
 
@@ -38,15 +34,10 @@ export const logout = createAsyncThunk('auth/logout', async (param, thunkAPI) =>
             thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
             return
         } else {
-            handleServerAppError(thunkAPI.dispatch, res.data)
-            thunkAPI.rejectWithValue({})
+            return handleAsyncServerAppError(res.data, thunkAPI)
         }
-    } catch (e) {
-        const err = e as Error | AxiosError
-        if (axios.isAxiosError(err)) {
-            handleServerNetWorkError(thunkAPI.dispatch, err)
-            thunkAPI.rejectWithValue({})
-        }
+    } catch (error) {
+        return handleAsyncServerNetworkError(error as AxiosError, thunkAPI)
     }
 })
 

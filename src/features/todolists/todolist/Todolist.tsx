@@ -4,12 +4,12 @@ import EditableSpan from "../../../components/editableSpan/EditableSpan"
 import {Button, IconButton, Paper} from "@mui/material"
 import {Delete} from "@mui/icons-material"
 import TaskComponent from "./task/TaskComponent"
-import {TaskStatuses} from "../../../api/todolist-api"
 import {FilterType} from "../todolists-reducer";
 import {TaskDomainType} from "../tasks-reducer";
 import {useActions, useAppDispatch} from "../../../app/hooks";
 import {RequestStatusType} from "../../../app/app-reducer";
 import {tasksActions, todolistsActions} from "../index";
+import {TaskStatuses} from "../../../api/types";
 
 
 export const Todolist: React.FC<PropsType> = React.memo((

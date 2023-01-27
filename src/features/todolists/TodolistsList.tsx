@@ -8,7 +8,7 @@ import {ROUTS} from "../../app/App";
 import {authSelectors} from "../auth";
 import {todolistsActions} from "./index";
 
-export const TodolistsLists: React.FC = () => {
+export const TodolistsList: React.FC = () => {
     let todolists = useAppSelector(state => state.todolists)
     let tasks = useAppSelector(state => state.tasks)
     const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn)
@@ -33,7 +33,6 @@ export const TodolistsLists: React.FC = () => {
         else {
             helper.setNewTitle('')
         }
-        // createTodolist(todolistTitle)
     }, [])
 
     useEffect(() => {

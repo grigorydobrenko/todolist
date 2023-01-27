@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import './App.css'
 import {AppBar, Button, CircularProgress, Container, LinearProgress, Toolbar, Typography} from "@mui/material"
-import {TodolistsLists} from "../features/todolists/TodolistsLists"
+import {TodolistsList} from "../features/todolists/TodolistsList"
 import {CustomizedSnackbars} from "../components/errorSnackbar/ErrorSnackbar";
 import {Login} from "../features/auth";
 import {Navigate, Route, Routes} from "react-router-dom";
@@ -52,7 +52,7 @@ function App() {
             </AppBar>
             <Container fixed>
                 <Routes>
-                    <Route path={ROUTS.DEFAULT} element={<TodolistsLists/>}></Route>
+                    <Route path={ROUTS.DEFAULT} element={<TodolistsList/>}></Route>
                     <Route path={ROUTS.LOGIN} element={<Login/>}></Route>
                     <Route path={ROUTS.NOT_FOUND}
                            element={<h1 style={{textAlign: 'center'}}>404: PAGE NOT FOUND</h1>}></Route>
