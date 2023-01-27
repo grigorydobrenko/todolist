@@ -3,6 +3,7 @@ import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ResultCode} from "../api/types";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../utils/error-utils";
+import {setIsLoggedIn} from "../features/auth/auth-reducer";
 
 // thunks
 
@@ -10,7 +11,7 @@ export const initializeApp = createAsyncThunk('app/initializeApp', async (param,
     try {
         const res = await authAPI.me()
         if (res.data.resultCode === ResultCode.OK) {
-            return {value: true}
+            thunkAPI.dispatch(setIsLoggedIn({value: true}))
         } else {
             return handleAsyncServerAppError(res.data, thunkAPI)
         }
