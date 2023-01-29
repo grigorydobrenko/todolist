@@ -19,7 +19,6 @@ import {useAppDispatch, useAppSelector} from "../../utils/redux-utils";
 export const Login = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
-    console.log(isLoggedIn)
     const formik = useFormik({
         initialValues: {
             email: '',
